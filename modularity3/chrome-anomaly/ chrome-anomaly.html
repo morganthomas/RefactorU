@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CSS Media Query Anomaly</title>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="framework.css">
+    <style>
+
+    .search-bar {
+      padding: 15px;
+      background-color: #DDDDDD;
+      border-radius: 10px;
+      height: 30px;
+    }
+
+    .search-bar-element {
+      display: inline-block;
+      position: relative;
+      height: 30px;
+    }
+
+    .search-bar-input { /* center */
+      width: 70%;
+    }
+
+    .search-bar-input input {
+      width: 95%;
+      border-radius: 5px;
+      border: 1px solid lightgrey;
+      padding: 5px;
+    }
+
+    .search-bar-submit-button { /* right */
+      float: right;
+      width: 20%;
+    }
+
+    @media (max-width: 770px) {
+      .search-bar-submit-button {
+        float: none;
+        display: block;
+      }
+    }
+
+    </style>
+  </head>
+  <body>
+      <div class="search-bar">
+        <div class="search-bar-element search-bar-input">
+          <input>
+        </div>
+        <input type="submit" class="search-bar-element search-bar-submit-button">
+      </div>
+	</body>
+</html>

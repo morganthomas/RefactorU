@@ -1,0 +1,179 @@
+/* ADD YOUR STYLES HERE */
+
+.centered-container {
+  text-align: center;
+}
+
+.centered {
+  display: inline-block;
+  vertical-align: top;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.vertical-center-container {
+
+}
+
+.vertical-center {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.horizontal-list {
+  padding: 0;
+}
+
+.horizontal-list li {
+  /*display: inline;*/
+  padding: 0;
+  float: left;
+  list-style: none;
+  margin: 0;
+}
+
+.button {
+  background-color: #F99;
+  border-radius: 5px;
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  border: none;
+}
+
+a,a:visited {
+  color: white;
+}
+
+.button-big {
+  font-size: 16pt;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.button-med {
+  font-size: 12pt;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button-small {
+  font-size: 10pt;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+nav {
+  background-color: #F99;
+  border-radius: 5px;
+  display: inline-block;
+  color: white;
+}
+
+nav ul {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+nav li {
+  display: inline-block;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+}
+
+.pagination-control {
+  padding: 0;
+}
+
+.pagination-control li {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 3px;
+  vertical-align: top;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.pagination-control a {
+  text-decoration: none;
+  color: #f99;
+}
+
+.pagenum {
+  border-bottom: 3px solid #f99;
+}
+
+.current-pagenum {
+  color: lightgrey;
+  border-bottom: 3px solid lightgrey;
+}
+
+.avatar {
+  float: left;
+}
+
+.comment {
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+.comment-container {
+  clear: left;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.comment-time {
+  color: lightgrey;
+  font-size: 10pt;
+}
+
+.tabbed-nav-container {
+
+}
+
+.tabbed-navbar {
+  padding-left: 15px;
+}
+
+.tabbed-navbar li {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: 1px solid #7A9ABA;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-bottom: -1px;
+}
+
+.tabbed-navbar .current {
+  border-bottom: 1px solid white;
+}
+
+.tabbed-navbar li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: blue;
+}
+
+.tabbed-nav-content {
+  padding: 10px;
+  border: 1px solid #7A9ABA;
+  border-radius: 10px;
+}

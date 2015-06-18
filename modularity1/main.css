@@ -4,11 +4,11 @@
   width: 100%;
 }
 
-.data-table tr {
+.data-table-row {
   border-bottom: 1px solid lightgrey;
 }
 
-.data-table td,th {
+.data-table-cell {
   padding: 10px;
 }
 

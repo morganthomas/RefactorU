@@ -1,0 +1,168 @@
+/* ADD YOUR STYLES HERE */
+
+/** {
+  box-sizing: border-box;
+}*/
+
+a {
+  text-decoration: none;
+}
+
+.form-field {
+  width: 500px;
+  text-align: right;
+  margin-top: 20px;
+  position: relative;
+  /*line-height: 100%;*/
+}
+
+.form-field-label {
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.form-field-input {
+  width: 250px;
+}
+
+input[type="text"], input[type="email"] {
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  padding: 5px;
+}
+
+.city-field {
+  width: 135px;
+}
+
+.state-field {
+  width: 25px;
+}
+
+.form-other-element {
+  margin-top: 20px;
+  margin-left: 230px;
+  width: 280px;
+}
+
+.form-checkbox {
+  margin-right: 0.5em;
+}
+
+.submit-button {
+  display: block;
+  width: 100%;
+  background-color: #CCCCCC;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.form-field-input-shadow-green {
+  box-shadow: 0px 0px 5px 0px rgba(65,204,43,1);
+}
+
+.is-valid {
+  color: rgba(65,204,43,1);
+}
+
+.form-field-input-shadow-red {
+  box-shadow: 0px 0px 5px 0px red;
+  margin-bottom: 5px;
+}
+
+.is-invalid {
+  color: red;
+}
+
+.is-valid, .is-invalid {
+  position: absolute;
+  left: 500px;
+  text-align: left;
+  width: 200px;
+  padding-left: 20px;
+  padding-top: 5px;
+}
+
+.search-bar {
+  padding: 15px;
+  background-color: #DDDDDD;
+  border-radius: 10px;
+  height: 30px;
+}
+
+.search-bar-element {
+  display: inline-block;
+  position: relative;
+  height: 30px;
+}
+
+.search-bar-label { /* left */
+  float: left;
+  margin-right: 15px;
+}
+
+.search-bar-label label {
+  display: inline-block;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.search-bar-input { /* center */
+  display: block;
+  overflow: hidden;
+  padding-right: 30px;
+}
+
+.search-bar-input input {
+  display: block;
+  width: 100%;
+}
+
+.search-bar-submit-button { /* right */
+  float: right;
+  background-color: #ED828A;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.omnibox {
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  padding: 5px;
+  box-shadow: 0px 0px 5px 0px lightgrey;
+  margin: 5px;
+  display: inline-block;
+}
+
+.omnibox-tags {
+  list-style: none;
+  display: inline-block;
+  padding-left: 5px;
+}
+
+.omnibox-tag {
+  display: inline-block;
+  margin: 0 1px;
+  padding: 4px;
+  font-size: 10pt;
+  background-color: #788AF0;
+  color: white;
+  border-radius: 5px;
+}
+
+.omnibox-x {
+  background-color: #616DBE;
+  padding: 0 3px;
+  text-align: center;
+  border-radius: 4px;
+  color: white;
+  margin-right: 4px;
+}
+
+.omnibox-entry.omnibox-entry {
+  border: none;
+}
