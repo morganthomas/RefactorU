@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+}
+
+.all {
+  position: relative;
+  max-width: 960px;
+  margin: auto;
+  display: block;
+  background-color: white;
+  padding: 4% 7%;
+}
+
+.site-header {
+  display: inline-block;
+  color: white;
+  background-color: #3D5C99;
+  padding: 1em;
+  margin: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  width: 80%;
+}
+
+.top {
+  background-color: #B5C5E6;
+  text-align: center;
+  padding: 7% 0;
+  border-radius: 5px;
+}
+
+.main-nav {
+  display: block;
+  background-color: #3D5C99;
+  padding: 1em;
+  border-radius: 5px;
+  width: 95%;
+  margin: auto;
+}
+
+.main-nav-link {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+body {
+  background-color: lightgrey;
+}
+
+main {
+  color: #24355A;
+}
+
+.article-header {
+  border-bottom: 1px solid #24355A;
+}
+
+.article-side-image {
+  /*float: right;*/
+  display: block;
+  margin: auto;
+  /*padding-left: 1em;*/
+  /*padding-bottom: 1em;*/
+  /*max-width: 60%;*/
+}
+
+.gallery {
+  text-align: center;
+}
+
+.gallery-img {
+  padding: 0 5px;
+}
+
+@media all and (max-width: 960px) {
+  .all {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media all and (max-width: 750px) {
+  /*.top {
+    padding: 3% 0;
+  }*/
+
+  .site-header {
+    margin-bottom: 1em;
+    display: block;
+    margin: auto;
+    margin-bottom: 0.3em;
+  }
+
+  .main-nav-link {
+    display: inline-block;
+    float: left;
+    clear: left;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    background-color: #3D5C99;
+    border-radius: 5px;
+    padding: 1em;
+    width: 100%;
+  }
+
+  .main-nav {
+    display: inline-block;
+    width: auto;
+    background-color: #B5C5E6;
+    padding: 0;
+  }
+
+  .site-header {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+}
+
+@media all and (max-width: 715px) {
+  .gallery-img {
+    display: block;
+    margin: auto;
+    padding: 10px 0;
+  }
+}
+
+@media all and (max-width: 625px) {
+  .article-side-image {
+    float: none;
+    max-width: 100%;
+    display: block;
+    margin: auto;
+  }
+}
+
+.popup {
+  position: fixed;
+  width: 600px;
+  height: 200px;
+  background-color: white;
+  border: 1px solid lightgrey;
+  z-index: 2;
+  left: 50%;
+  margin-left: -300px;
+  top: 20%;
+  text-align: center;
+  padding-top: 30px;
+}
