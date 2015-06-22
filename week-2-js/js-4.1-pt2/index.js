@@ -1,11 +1,23 @@
-$("#the-button").on('click', function() {
-  $("body").append($('<div class="message">Ouch!</div>'));
-});
+$(document).ready(function() {
+  $('p').on('mouseenter',
+    function() {
+      $(this).css('color', 'pink');
+    });
 
-$("#the-other-button").on('click', function() {
-  $("body").append($('<h1>Yay!</h1>'))
-});
+  $('p').on('mouseleave',
+    function() {
+      $(this).css('color', 'inherit');
+    })
 
-$("#the-other-other-button").on('click', function() {
-  $("body").append($('<ul><li>One?</li><li>Two??</li><li>Three???</li></ul>'));
-})
+  $('h1').append('!');
+
+  $('a').on('click',
+    function() {
+      if (confirm("Are you sure you want this link?")) {
+        return true;
+      } else {
+        $(this).remove();
+        return false;
+      }
+    });
+});
