@@ -166,3 +166,92 @@ input[type="text"], input[type="email"] {
 .omnibox-entry.omnibox-entry {
   border: none;
 }
+
+.repo-list {
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  /*padding: 10px;*/
+  box-shadow: 0px 0px 5px 0px lightgrey;
+  margin: 5px;
+}
+
+.repo-list-header {
+  /* Background gradient */
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgb(255,255,255) 0%, rgb(206,206,206) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,255,255)), color-stop(100%,rgb(206,206,206))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgb(255,255,255) 0%,rgb(206,206,206) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgb(255,255,255) 0%,rgb(206,206,206) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgb(255,255,255) 0%,rgb(206,206,206) 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgb(255,255,255) 0%,rgb(206,206,206) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#cecece',GradientType=0 ); /* IE6-9 */
+
+  padding: 15px;
+}
+
+.repo-list-header h3 {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  font-weight: bold;
+}
+
+.repo-list-body {
+  list-style: none;
+  padding: 0;
+}
+
+.repo-list-item {
+  border-bottom: 1px solid lightgrey;
+}
+
+.repo-list-item-info {
+  display: block;
+  overflow: hidden;
+  padding-top: 10px;
+  padding-right: 20px;
+  color: #333;
+}
+
+.repo-list-item-description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 10pt;
+}
+
+.repo-list-item-name {
+  color: #0931CE;
+  font-weight: bold;
+}
+
+.repo-list-item-favorited {
+  float: right;
+  padding-right: 10px;
+  padding-top: 10px;
+  color: #333;
+}
+
+.repo-list-item-favorited:after {
+  content: "★";
+  margin-left: 5px;
+  color: #888888;
+}
+
+.repo-list-item-icon-container {
+  float: left;
+  width: 50px;
+}
+
+.repo-list-item-icon {
+  margin-left: 12.5px;
+  margin-top: 12.5px;
+  width: 15px;
+  height: 15px;
+  background-image: url("http://placehold.it/15x15");
+  background-repeat: no-repeat;
+}
+
+.repo-list-item-name {
+  margin-bottom: 2px;
+}
