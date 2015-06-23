@@ -1,0 +1,78 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #5C995C;
+  font-family: sans-serif;
+}
+
+.page {
+  width: 700px;
+  background-color: white;
+  margin: auto;
+  padding: 50px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+}
+
+.profile-header {
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.show-form-button {
+  margin-bottom: 20px;
+}
+
+.profile-edit {
+  margin-bottom: 40px;
+  overflow: hidden;
+  display: none;
+}
+
+.profile-edit label {
+  float: left;
+  clear: both;
+  width: 30%;
+  text-align: right;
+}
+
+.profile-edit .input {
+  float: right;
+  width: 67%;
+  text-align: left;
+  /*margin-left: 20px;*/
+  margin-bottom: 10px;
+}
+
+.profile-edit .submit {
+  display: block;
+  clear: both;
+  margin: auto;
+}
+
+.profile {
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile dt {
+  width: 30%;
+  float: left;
+  text-align: right;
+  clear: both;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.profile dd {
+  width: 70%;
+  margin-left: 0;
+  padding-left: 20px;
+  float: right;
+  text-align: left;
+  padding-bottom: 10px;
+}

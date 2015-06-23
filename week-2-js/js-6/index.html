@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <h1 class="profile-header editable">User Profile</h1>
+
+    <input type="button" value="Show Form" class="show-form-button">
+
+    <form class="profile-edit">
+      <label for="name">Name</label>
+      <input type="text" name="name" class="input">
+      <label for="bio">Bio</label>
+      <textarea name="bio" rows="10" cols="70" name="bio" class="input"></textarea>
+      <label for="favorite-books">Favorite books</label>
+      <textarea name="favorite-books" rows="5" cols="70" name="favorite-books" class="input"></textarea>
+      <label for="favorite-libraries">Favorite JavaScript libraries</label>
+      <input type="text" name="favorite-libraries" class="input">
+      <input type="submit" value="Submit" class="submit">
+    </form>
+
+    <dl class="profile">
+      <dt>Name</dt>
+      <dd id="display-name">Morgan Thomas</dd>
+      <dt>Bio</dt>
+      <dd id="display-bio">Aenean dignissim rhoncus odio, in tempor sapien condimentum aliquet. Proin quis tellus bibendum, aliquam velit ut, finibus nunc. Donec efficitur ipsum nec metus auctor, in molestie nunc malesuada. Fusce dui sapien, fringilla non finibus et, eleifend et turpis. Sed eget orci a nisl dignissim accumsan. </dd>
+      <dt>Favorite books</dt>
+      <dd id="display-favorite-books">Phasellus blandit ultricies dapibus. Nullam interdum auctor dolor, id maximus velit pretium in. Maecenas et nisl interdum, consectetur lacus nec, faucibus mi. Phasellus felis tortor, faucibus vel est id, pretium aliquam mauris. Vivamus ante dolor, vehicula eu tincidunt non, facilisis quis orci. </dd>
+      <dt>Favorite JavaScript libraries</dt>
+      <dd id="display-favorite-libraries">jQuery</dd>
+    </dl>
+  </div>
+
+  <script src="jquery-1.11.3.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
