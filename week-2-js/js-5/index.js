@@ -1,24 +1,29 @@
 $(document).ready(function() {
+  var profileItemBeingEdited = null;
+  var inPlaceEditor = null;
+
   $(".profile").on("click", "dd", function() {
-    var profileItemContents = $(this);
-    profileItemContents.css("visibility", "hidden");
-    var pos = profileItemContents.position();
+    profileItemBeingEdited = $(this);
+    profileItemBeingEdited.css("visibility", "hidden");
+    var pos = profileItemBeingEdited.position();
 
-    var textInput = $('<input type="text" class="in-place-editor">');
-    textInput.css("top", pos.top);
-    textInput.css("left", pos.left);
-    textInput.val(profileItemContents.text());
-    textInput.focus();
+    inPlaceEditor = $('<input type="text" class="in-place-editor">');
+    inPlaceEditor.css("top", pos.top);
+    inPlaceEditor.css("left", pos.left);
+    inPlaceEditor.val(profileItemBeingEdited.text());
 
-    textInput.on("keypress", function(keyEvent) {
-      if (keyEvent.keyCode === 13) {
-        // The user pressed 'enter'
-        profileItemContents.css("visibility", "visible");
-        profileItemContents.text(textInput.val());
-        textInput.remove();
-      }
-    });
+    $(".profile").append(inPlaceEditor);
+    inPlaceEditor.focus();
+  });
 
-    $(".profile").append(textInput);
+  $(".profile").on("blur", ".in-place-editor", function() {
+    // This works because there is only one in place editor at a time, so
+    // we can assume the one that triggered this event is the one we have
+    // stored in our variables.
+    profileItemBeingEdited.css("visibility", "visible");
+    profileItemBeingEdited.text(inPlaceEditor.val());
+    inPlaceEditor.remove();
+    profileItemBeingEdited = null;
+    inPlaceEditor = null;
   });
 });
