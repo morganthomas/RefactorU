@@ -1,7 +1,7 @@
 function updateProfileFromForm() {
   $(".input").each(function(input) {
     $('#display-' + $(this).prop('name')).text($(this).val());
-  })
+  });
 }
 
 function updateFormFromProfile() {
@@ -25,7 +25,7 @@ function showForm() {
   updateFormFromProfile();
 }
 
-function showFormClickHandler() {
+function showFormToggleClickHandler() {
   if (formIsDisplayed()) {
     hideForm();
   } else {
@@ -34,10 +34,6 @@ function showFormClickHandler() {
 }
 
 $(document).ready(function() {
-  $(".show-form-button").on('click', showFormClickHandler);
-
-  $('.submit').on('click', function(event) {
-    event.preventDefault();
-    updateProfileFromForm();
-  });
+  $(".show-form-button").on('click', showFormToggleClickHandler);
+  $('.input').on('keyup', updateProfileFromForm);
 });
