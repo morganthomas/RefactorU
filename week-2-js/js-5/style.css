@@ -19,6 +19,7 @@ body {
   margin: auto;
   padding: 50px;
   overflow: hidden;
+  position: relative;
 }
 
 .profile {
@@ -45,6 +46,9 @@ body {
 
 .in-place-editor {
   position: absolute;
+}
+
+.profile .in-place-editor {
   margin-left: 20px;
   width: 65%;
 }
