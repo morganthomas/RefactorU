@@ -28,7 +28,7 @@ function all(bools) {
 }
 
 function some(bools) {
-  return foldl(function(a,b) { return a || b; }, false, bools)
+  return foldl(function(a,b) { return a || b; }, false, bools);
 }
 
 // Returns true if the given string represents a natural number.
