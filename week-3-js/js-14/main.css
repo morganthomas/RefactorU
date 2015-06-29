@@ -1,0 +1,117 @@
+.clock-outer-shell {
+  position: absolute;
+  width: 500px;
+  height: 220px;
+  border-radius: 30px;
+  background-color: darkgrey;
+}
+
+.clock-inner-shell {
+  position: absolute;
+  width: 400px;
+  height: 190px;
+  border-radius: 20px;
+  background-color: grey;
+  bottom: 0px;
+  left: 0px;
+  color: #DDD;
+}
+
+.clock-screen {
+  position: absolute;
+  left: 50px;
+  top: 25px;
+  width: 300px;
+  height: 100px;
+  border-radius: 20px;
+  background-color: darkred;
+  color: red;
+  text-align: center;
+  font-size: 70px;
+  font-family: monospace;
+}
+
+.clock-text {
+  display: inline;
+  line-height: 100%;
+  vertical-align: middle;
+}
+
+.clock-time-colon {
+  animation: blink 1s steps(2, start) infinite;
+  -webkit-animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@-webkit-keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.clock-indicator {
+  position: absolute;
+  left: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: red;
+}
+
+.clock-auto-indicator {
+  bottom: 30px;
+}
+
+.clock-pm-indicator {
+  bottom: 70px;
+  visibility: hidden;
+}
+
+.clock-left-label {
+  position: absolute;
+  left: 10px;
+}
+
+.clock-auto-label {
+  top: 85px;
+}
+
+.clock-am-pm-label {
+  top: 45px;
+}
+
+.clock-freq-display {
+  position: absolute;
+  left: 70px;
+}
+
+.clock-freq-label {
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.clock-freq-list {
+  display: inline-block;
+}
+
+.clock-freq-list li {
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.clock-freq-am-display {
+  bottom: 35px;
+}
+
+.clock-freq-fm-display {
+  bottom: 10px;
+}
+
+.clock-freq-fm-display .clock-freq-list {
+  margin-left: 10px;
+}
