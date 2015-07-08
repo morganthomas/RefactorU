@@ -2,8 +2,8 @@ function immutableToJS(obj) {
   return obj.toJS();
 }
 
-// Quotes
-var Quote = Immutable.Record({ text: null, author: null, rating: null });
+// Quotes. Ratings are 1-5; 0 represents no rating.
+var Quote = Immutable.Record({ text: "", author: "", rating: 0 });
 
 // Gives the ordering on quotes.
 function compareQuotes(quote1, quote2) {
@@ -13,12 +13,6 @@ function compareQuotes(quote1, quote2) {
         (quote1.author === quote2.author && quote1.text < quote2.text))) ?
     -1 : (Immutable.is(quote1, quote2) ? 0 : 1);
 }
-
-// The list of quotes is represented as an Immutable.List, which is kept sorted
-// in our desired order.
-// var makeEmptyQuoteDB = function() {
-//   return new Immutable.List();
-// };
 
 // Quote actions are Immutable.Maps, as follows:
 //  { type: 'add', quote: Quote, [index: number] }
@@ -32,16 +26,6 @@ function compareQuotes(quote1, quote2) {
 //    Modifies the quote at the given index, which is assumed to be 'from', to 'to'.
 //  { type: 'undo' }
 //    Undoes the last action.
-
-// Given a quote DB and an action, returns a new quote DB reflecting the result of the action.
-// var performActionOnQuoteDB = function(db, act) {
-//   if (act.get('type') === 'add') {
-//     // XXX: Put in order; don't add the quote if it's already there.
-//     return db.push(act.get('quote'));
-//   } else if (act.get('type') === 'remove') {
-//     return db.filterNot(function(quote) { return Immutable.is(quote, act.get('quote')); });
-//   }
-// };
 
 // Given an action, yields the inverse of that action (the one that will undo it).
 var actionInverse = function(act) {
@@ -57,7 +41,11 @@ var quotes = [new Quote({text: "Nowadays people know the price of everything and
 
 // Given a .quote DOM node, extracts the corresponding Quote object.
 function domToQuote($quote) {
-  return new Quote({ text: $quote.find('.quote-text').text(), author: $quote.find('.quote-author').text() })
+  return new Quote({
+    text: $quote.find('.quote-text').text(),
+    author: $quote.find('.quote-author').text(),
+    rating: parseInt($quote.find('.quote-rating').text())
+  });
 }
 
 //
@@ -73,7 +61,7 @@ function makeAddActionStream() {
   var addActionStream = Bacon.zipAsArray(addEventStream,
       addFormAuthorStream.sampledBy(addEventStream),
       addFormTextStream.sampledBy(addEventStream)).map(function(event) {
-    return new Immutable.Map({ type: 'add', quote: new Quote({ author: event[1], text: event[2], rating: null })});
+    return new Immutable.Map({ type: 'add', quote: new Quote({ author: event[1], text: event[2], rating: 0 })});
   });
 
   return addActionStream;
