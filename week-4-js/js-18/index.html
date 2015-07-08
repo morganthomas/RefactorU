@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Inspirational Quotes</title>
+  <!-- <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css"> -->
+  <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script> -->
+  <!-- <link rel="stylesheet/less" type="text/css" href="main.less"> -->
+</head>
+<body>
+
+  <div class="page">
+    <form id="undo-form">
+      <input type="submit" id="undo-button" value="Undo">
+    </form>
+
+    <form id="add-quote-form">
+      <textarea rows="4" cols="80" id="add-quote-text"></textarea>
+      <div>
+        <label for="author">Author</label>
+        <input type="text" name="author" id="add-quote-author">
+      </div>
+      <div>
+        <input type="submit" id="add-quote-submit" value="Add Quote">
+      </div>
+    </form>
+
+    <div id="quote-list">
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.4/immutable.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.69/Bacon.js"></script>
+  <script src="Bacon.UI.js"></script>
+  <!-- <script src="object-version.js"></script> -->
+	<script src="main.js"></script>
+
+</body>
+</html>
