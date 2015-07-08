@@ -16,28 +16,49 @@ function compareQuotes(quote1, quote2) {
 
 // The list of quotes is represented as an Immutable.List, which is kept sorted
 // in our desired order.
-var makeEmptyQuoteDB = function() {
-  return new Immutable.List();
-};
+// var makeEmptyQuoteDB = function() {
+//   return new Immutable.List();
+// };
 
 // Quote actions are Immutable.Maps, as follows:
-//  { type: 'add', text: string, author: string, rating: 1-5 or null, [index: number] }
-//  { type: 'remove', index: number, quote: Quote }
-//  { type: 'modify', index: number, [text: string], [author: string], [rating: 1-5 or null] }
+//  { type: 'add', quote: Quote, [index: number] }
+//    Adds the given quote. The index where it belongs may be specified, but is
+//    a function of the current quote DB and the quote to be added.
+//  { type: 'remove', quote: Quote, [index: number] }
+//    Removes the given quote. The index where it is may be specified, but since
+//    we allow only one of each quote in the database, the index is a function
+//    of the quote DB and the quote.
+//  { type: 'modify', index: number, from: Quote, to: Quote }
+//    Modifies the quote at the given index, which is assumed to be 'from', to 'to'.
 //  { type: 'undo' }
+//    Undoes the last action.
 
 // Given a quote DB and an action, returns a new quote DB reflecting the result of the action.
-var performActionOnQuoteDB = function(db, act) {
+// var performActionOnQuoteDB = function(db, act) {
+//   if (act.get('type') === 'add') {
+//     // XXX: Put in order; don't add the quote if it's already there.
+//     return db.push(act.get('quote'));
+//   } else if (act.get('type') === 'remove') {
+//     return db.filterNot(function(quote) { return Immutable.is(quote, act.get('quote')); });
+//   }
+// };
+
+// Given an action, yields the inverse of that action (the one that will undo it).
+var actionInverse = function(act) {
   if (act.get('type') === 'add') {
-    // XXX: Put in order
-    return db.push(new Quote({ text: act.get('text'), author: act.get('author'), rating: act.get('rating') }));
+    return new Immutable.Map({ type: 'remove', quote: act.get('quote') });
   } else if (act.get('type') === 'remove') {
-    return db.delete(act.get('index'));
+    return new Immutable.Map({ type: 'add', quote: act.get('quote') });
   }
-};
+}
 
 var quotes = [new Quote({text: "Nowadays people know the price of everything and the value of nothing.", author: "Oscar Wilde", rating: 3}),
   new Quote({text: "Education is an admirable thing, but it is well to remember from time to time that nothing that is worth knowing can be taught.", author: "Oscar Wilde", rating: 3})];
+
+// Given a .quote DOM node, extracts the corresponding Quote object.
+function domToQuote($quote) {
+  return new Quote({ text: $quote.find('.quote-text').text(), author: $quote.find('.quote-author').text() })
+}
 
 //
 // Bacon event code
@@ -52,7 +73,7 @@ function makeAddActionStream() {
   var addActionStream = Bacon.zipAsArray(addEventStream,
       addFormAuthorStream.sampledBy(addEventStream),
       addFormTextStream.sampledBy(addEventStream)).map(function(event) {
-    return new Immutable.Map({ type: 'add', author: event[1], text: event[2], rating: null });
+    return new Immutable.Map({ type: 'add', quote: new Quote({ author: event[1], text: event[2], rating: null })});
   });
 
   return addActionStream;
@@ -62,9 +83,9 @@ function makeRemoveActionStream() {
   var removeEventStream = $('#quote-list').asEventStream('click', '.quote-remove button');
 
   var removeActionStream = removeEventStream.map(function(event) {
-    var targetQuote = $(event.currentTarget).closest('.quote');
-    var index = targetQuote.prevAll('.quote').length;
-    return new Immutable.Map({ type: 'remove', index: index });
+    var $quote = $(event.currentTarget).closest('.quote');
+    // var index = $quote.prevAll('.quote').length;
+    return new Immutable.Map({ type: 'remove', quote: domToQuote($quote) });
   });
 
   return removeActionStream;
@@ -72,7 +93,7 @@ function makeRemoveActionStream() {
 
 var UndoStack = Immutable.Record({ list: new Immutable.List(), index: 0 })
 
-function makeUndo(preUndoQuoteActions) {
+function makeUndoActionStream(preUndoQuoteActions) {
   var undoEventStream = $("#undo-button").asEventStream('click').
     map(new Immutable.Map({ type: 'undo' }));
 
@@ -93,13 +114,19 @@ function makeUndo(preUndoQuoteActions) {
       }
     });
 
-  undoStack.map(immutableToJS).log();
+  // undoStack.map(immutableToJS).log();
 
-  var undoActionStream = undoStack.sampledBy(undoEventStream).map(function(stack) {
-    return ["undo", stack.list.get(stack.index).toJS()];
-  });
+  var undoActionStream = undoStack.sampledBy(undoEventStream)
+    .filter(function(stack) {
+      return stack.list.get(stack.index) !== undefined;
+    })
+    .map(function(stack) {
+      var lastAct = stack.list.get(stack.index);
+      return actionInverse(lastAct);
+    });
 
-  undoActionStream.log();
+  undoActionStream.map(immutableToJS).log();
+  return undoActionStream;
 }
 
 // Makes the whole bacon event network.
@@ -108,16 +135,13 @@ function makeEventNetwork() {
   var removeActionStream = makeRemoveActionStream();
 
   var preUndoQuoteActions = addActionStream.merge(removeActionStream); // XXX
+  var undoActionStream = makeUndoActionStream(preUndoQuoteActions);
+  var postUndoQuoteActions = preUndoQuoteActions.merge(undoActionStream); // XXX
 
-  makeUndo(preUndoQuoteActions);
-  var postUndoQuoteActions = preUndoQuoteActions; // XXX
-
-  var quoteList = postUndoQuoteActions.scan(makeEmptyQuoteDB(), performActionOnQuoteDB);
+  // var quoteList = postUndoQuoteActions.scan(makeEmptyQuoteDB(), performActionOnQuoteDB);
   // quoteList.map(immutableToJS).log();
 
-  var elabQuoteActions = postUndoQuoteActions; // XXX
-
-  elabQuoteActions.onValue(displayQuoteAction);
+  postUndoQuoteActions.onValue(displayQuoteAction);
 }
 
 //
@@ -134,19 +158,20 @@ function displayQuoteAction(act) {
 }
 
 function displayAddQuoteAction(act) {
-  // XXX: add in order
+  // XXX: add in order, and don't add duplicates
+  var quote = act.get('quote');
   var $quote = $('<div class="quote"></div>');
 
   var $text = $('<div class="quote-text"></div>');
-  $text.text(act.get('text'));
+  $text.text(quote.text);
   $quote.append($text);
 
   var $author = $('<div class="quote-author"></div>');
-  $author.text(act.get('author'));
+  $author.text(quote.author);
   $quote.append($author);
 
   var $rating = $('<div class="quote-rating"></div>');
-  $rating.text(act.get('rating') === null ? '(not rated)' : act.get('rating'));
+  $rating.text(quote.rating === null ? '(not rated)' : quote.rating);
   $quote.append($rating);
 
   var $remove = $('<div class="quote-remove"><button>Remove</button></div>');
@@ -156,7 +181,9 @@ function displayAddQuoteAction(act) {
 }
 
 function displayRemoveQuoteAction(act) {
-  $('#quote-list .quote:nth-child(' + (act.get('index') + 1) + ')').remove();
+  $('#quote-list .quote').filter(function() {
+    return Immutable.is(domToQuote($(this)), act.get('quote'));
+  }).remove();
 }
 
 //
