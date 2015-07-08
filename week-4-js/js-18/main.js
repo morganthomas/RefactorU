@@ -11,7 +11,7 @@ function compareQuotes(quote1, quote2) {
     (quote1.rating === quote2.rating &&
       (quote1.author < quote2.author ||
         (quote1.author === quote2.author && quote1.text < quote2.text))) ?
-    -1 : (Immutable.is(quote1, quote2) ? 0 : 1);
+    -1 : (quote1.author === quote2.author && quote1.text === quote2.text ? 0 : 1);
 }
 
 // Quote actions are Immutable.Maps, as follows:
