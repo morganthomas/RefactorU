@@ -60,5 +60,5 @@ $(document).on('ready', function() {
   }
 
   updateTime();
-  setTimeout(updateTime, 1000);
+  setInterval(updateTime, 1000);
 });
