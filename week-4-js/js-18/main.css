@@ -1,0 +1,56 @@
+body {
+  background-color: lightgrey;
+}
+
+h1 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.page {
+  /*min-width: 500px;*/
+  /*max-width: 700px;*/
+  background-color: white;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 50px;
+}
+
+#toggle-editor-form {
+  margin-bottom: 20px;
+}
+
+#undo-form {
+  margin-top: 20px;
+  border-top: 1px solid lightgrey;
+  padding-top: 20px;
+  border-bottom: 1px solid lightgrey;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.quote {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.quote-text {
+  /*display: inline;*/
+  font-size: 25px;
+}
+
+.quote-author {
+  /*display: inline;*/
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.quote-author:before {
+  content: " - ";
+}
+
+.quote-remove {}

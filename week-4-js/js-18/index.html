@@ -3,27 +3,38 @@
 <head>
   <meta charset="utf-8">
   <title>Inspirational Quotes</title>
-  <!-- <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css"> -->
-  <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script> -->
-  <!-- <link rel="stylesheet/less" type="text/css" href="main.less"> -->
+  <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 
-  <div class="page">
-    <form id="undo-form">
-      <input type="submit" id="undo-button" value="Undo">
+  <div class="page container">
+    <h1>Inspirational Quotes</h1>
+
+    <form id="toggle-editor-form">
+      <input type="submit" id="editor-toggle" class="form-control">
     </form>
 
-    <form id="add-quote-form">
-      <textarea rows="4" cols="80" id="add-quote-text"></textarea>
-      <div>
-        <label for="author">Author</label>
-        <input type="text" name="author" id="add-quote-author">
-      </div>
-      <div>
-        <input type="submit" id="add-quote-submit" value="Add Quote">
-      </div>
-    </form>
+    <div id="editor">
+      <form id="add-quote-form">
+        <div class="form-group">
+          <label for="text">Quote</label>
+          <textarea rows="4" cols="80" name="text" id="add-quote-text" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input type="text" name="author" id="add-quote-author" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="submit" class="form-control" id="add-quote-submit" value="Add Quote">
+        </div>
+      </form>
+
+      <form id="undo-form">
+        <input type="submit" class="btn btn-default" id="undo-button" value="Undo">
+        <input type="submit" class="btn btn-default" id="redo-button" value="Redo">
+      </form>
+    </div>
 
     <div id="quote-list">
 
