@@ -1,10 +1,21 @@
 // TODO:
-//  * Make ratings work
 //  * Random quote button
 //  * Author pages
 
+// Global variables
+var editorToggleState;
+var quoteListModifiedBus; // A bus to push to whenever the quote list is modified in any way
+
 function immutableToJS(obj) {
   return obj.toJS();
+}
+
+// Takes a DOM element and returns a property which is true when the element
+// is being hovered over, and false the rest of the time.
+function hoverProperty($elt) {
+  return $elt.asEventStream('mouseenter').map(true)
+    .merge($elt.asEventStream('mouseleave').map(false))
+    .toProperty(false);
 }
 
 // Quotes. Ratings are 1-5; 0 represents no rating.
@@ -46,7 +57,99 @@ function domToQuote($quote) {
   return new Quote({
     text: $quote.find('.quote-text').text(),
     author: $quote.find('.quote-author').text(),
-    rating: parseInt($quote.find('.quote-rating').text())
+    rating: getRatingDisplayValue($quote.find('.rating'))
+  });
+}
+
+//
+// Rating displays
+//
+
+var RATING_SCALE_SIZE = 5;
+
+// Makes a new rating display, and returns the DOM element,
+// a bus by which the rating can be set, and a property by which the
+// rating can be got.
+function makeRatingDisplay(startValue) {
+  var $rating = $('<div class="rating"></div>');
+  var bus = new Bacon.Bus();
+
+  bus.onValue(function(rating) {
+    setRatingDisplayValue($rating, rating, bus);
+    quoteListModifiedBus.push(true);
+  });
+
+  var property = bus.toProperty();
+
+  bus.push(startValue);
+
+  return {element: $rating, bus: bus, property: property};
+}
+
+function getRatingDisplayValue($rating) {
+  return $rating.data('rating');
+}
+
+function setRatingDisplayValue($rating, rating, bus) {
+  $rating.data('rating', rating);
+  $rating.empty();
+
+  var $stars = (new Immutable.List(Array(5))).map(function() {
+    return $('<i></i>');
+  });
+
+  $stars.forEach(function($star, i) {
+    $rating.append($star);
+
+    var starClickStream = $star.asEventStream('click');
+    starClickStream.subscribe(function() {
+      bus.push(i + 1);
+    });
+  });
+
+  var starHoverStreams = $stars.map(function($star, i) {
+    return hoverProperty($star).map(function(hover) {
+      return [i, hover];
+    });
+  });
+
+  // starHoverStreams.map(function(stream) { stream.log(); });
+
+  // Bacon.combineAsArray(starHoverStreams.toJS()).log();
+
+  var starHoverValue = Bacon.combineAsArray(starHoverStreams.toJS())
+    .map(function(hoverVals) {
+      return Math.max.apply(Math,
+        hoverVals.filter(function(hoverVal) {
+          return hoverVal[1];
+        }).map(function(hoverVal) { return hoverVal[0]; })
+      );
+    });
+
+  // starHoverValue.log();
+
+  var starValues = (new Immutable.List(Array(5))).map(function(val, i) {
+    return starHoverValue.map(function(hoverValue) {
+      return i + 1 <= rating ? (i <= hoverValue || hoverValue < 0 ? 'on' : 'mid') :
+                               (i <= hoverValue && hoverValue >= 0 ? 'mid' : 'off')
+    });
+  });
+
+  var VALUE_CLASSES = {
+    'on': ['fa', 'fa-star'],
+    'mid': ['fa', 'fa-star', 'greyed'],
+    'off': ['fa', 'fa-star-o']
+  };
+
+  starValues.forEach(function(valueStream, i) {
+    valueStream.subscribe(function(val) {
+      if (val.hasValue()) {
+        $stars.get(i).removeClass();
+        VALUE_CLASSES[val.value()].forEach(function (cls) {
+          $stars.get(i).addClass(cls);
+        });
+      }
+    });
   });
 }
 
@@ -63,7 +166,11 @@ function makeAddActionStream() {
   var addActionStream = Bacon.zipAsArray(addEventStream,
       addFormAuthorStream.sampledBy(addEventStream),
       addFormTextStream.sampledBy(addEventStream)).map(function(event) {
-    return new Immutable.Map({ type: 'add', quote: new Quote({ author: event[1], text: event[2], rating: 0 })});
+    return new Immutable.Map({
+      type: 'add',
+      quote: new Quote({ author: event[1], text: event[2],
+      rating: getRatingDisplayValue($('#editor-rating'))
+    })});
   });
 
   return addActionStream;
@@ -164,16 +271,32 @@ function makeEditorToggleState() {
   });
 
   var toggleButtonLabel = editorToggleState.map(function(on) {
-    return on ? "Hide Editor" : "Edit Quote Database";
+    return on ? "Done Editing" : "Edit Quote Database";
   });
 
   toggleButtonLabel.assign($('#editor-toggle'), 'attr', 'value');
 }
 
-var editorToggleState;
+function makeResortFunction() {
+  var listIsOutOfOrder = quoteListModifiedBus.map(function() {
+    return quoteListIsOutOfOrder();
+  }).toProperty(false);
+
+  var resortButtonVisibility = listIsOutOfOrder.map(function(is) {
+    return is ? 'visible' : 'hidden'
+  });
+
+  resortButtonVisibility.assign($('#resort-button'), "css", "visibility");
+
+  $('#resort-button').asEventStream('click').onValue(function() {
+    sortQuoteList();
+  })
+}
 
 // Makes the whole bacon event network.
 function makeEventNetwork() {
+  quoteListModifiedBus = new Bacon.Bus();
+
   makeEditorToggleState();
 
   var addActionStream = makeAddActionStream();
@@ -190,6 +313,8 @@ function makeEventNetwork() {
   // quoteList.map(immutableToJS).log();
 
   postUndoQuoteActions.onValue(displayQuoteAction);
+
+  makeResortFunction();
 }
 
 //
@@ -203,6 +328,8 @@ function displayQuoteAction(act) {
   } else if (act.get('type') === 'remove') {
     displayRemoveQuoteAction(act);
   }
+
+  quoteListModifiedBus.push(true);
 }
 
 function displayAddQuoteAction(act) {
@@ -217,8 +344,7 @@ function displayAddQuoteAction(act) {
   $author.text(quote.author);
   $quote.append($author);
 
-  var $rating = $('<div class="quote-rating"></div>');
-  $rating.text(quote.rating === null ? '(not rated)' : quote.rating);
+  var $rating = makeRatingDisplay(quote.rating).element;
   $quote.append($rating);
 
   var $remove = $('<div class="quote-remove"><button class="btn btn-danger">Remove</button></div>');
@@ -244,15 +370,21 @@ function displayAddQuoteAction(act) {
     $q = $q.next('.quote');
   }
 
-  if ($q.size() > 0) {
-    if (compareQuotes(domToQuote($q), quote) === 0) {
-      return;
-    } else {
-      $q.before($quote);
-    }
-  } else {
-    $('#quote-list').append($quote);
+  // if ($q.size() > 0) {
+  //   if (compareQuotes(domToQuote($q), quote) === 0) {
+  //     return;
+  //   } else {
+  //     $q.before($quote);
+  //   }
+  // } else {
+  //   $('#quote-list').append($quote);
+  // }
+
+  if ($q.size() > 0 && compareQuotes(domToQuote($q), quote) === 0) {
+    return;
   }
+
+  $('#quote-list').prepend($quote);
 
   $quote.slideDown();
 }
@@ -268,15 +400,71 @@ function displayRemoveQuoteAction(act) {
 }
 
 //
+// Sorting the quote list
+//
+
+function offerToSort() {
+  // XXX: For now, we just sort.
+  if (quoteListIsOutOfOrder()) {
+    // console.log("Sorting quote list!");
+    // sortQuoteList();
+  }
+}
+
+function quoteListIsOutOfOrder() {
+  var isOutOfOrder = false;
+  var quotes = $("#quote-list").children().toArray();
+
+  for (var i = 0; i < quotes.length - 1; i++) {
+    if (compareQuotes(domToQuote($(quotes[i])), domToQuote($(quotes[i+1]))) === 1) {
+      isOutOfOrder = true;
+    }
+  }
+
+  return isOutOfOrder;
+}
+
+function sortQuoteList() {
+  // Insertion sort.
+  $('#quote-list').children('.quote').toArray().forEach(function(quote) {
+    var $quote = $(quote);
+    // Put it in its place
+    var $prev = $quote.prev();
+
+    while ($prev.length > 0 &&
+      compareQuotes(domToQuote($prev), domToQuote($quote)) === 1) {
+      $quote.insertBefore($prev);
+      $prev = $prev.prev();
+      quoteListModifiedBus.push(true);
+    }
+  })
+}
+
+//
 // jQuery setup
 //
+
+function makeEditor() {
+  var ratingDisplay = makeRatingDisplay(0);
+  var $rating = ratingDisplay.element;
+  $rating.attr('id', 'editor-rating');
+  $('#add-quote-rating').append($rating);
+
+  $('#add-quote-submit').on('click', function() {
+    $('#add-quote-author').val('');
+    $('#add-quote-text').val('');
+    ratingDisplay.bus.push(0);
+  });
+}
 
 $(document).on('ready', function() {
   $('body').on('click', 'input[type="submit"]', function(event) {
     event.preventDefault();
   });
 
+  makeEventNetwork();
+  makeEditor();
   $('#editor').hide();
 
-  makeEventNetwork();
+  // $('body').prepend(makeRatingDisplay(2));
 });
