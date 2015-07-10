@@ -30,12 +30,7 @@ h1 {
   text-align: center;
 }
 
-#quote-list {
-  position: relative;
-}
-
 .quote {
-  position: relative;
   border: 1px solid lightgrey;
   border-radius: 5px;
   margin-bottom: 20px;
