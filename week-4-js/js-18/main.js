@@ -1,4 +1,5 @@
 // TODO:
+//  * Get sort list button to stay near center of screen
 //  * Random quote button
 //  * Author pages
 
