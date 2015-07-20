@@ -1,0 +1,14 @@
+{
+  "name": "web-colors",
+  "version": "1.0.0",
+  "description": "A command line program which gets the RGB values for a color name.",
+  "main": "color.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Morgan Thomas",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.59.0"
+  }
+}
