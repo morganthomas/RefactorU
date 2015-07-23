@@ -1,17 +1,20 @@
 extends layout
 
+block extra-header-data
+  +narrowPage
+
 block content
-  h1 Submit a Video
+  +headerWithBackButton("Submit a Video")
   
-  form(method="POST" action="/submit-action")
-    div
-      label(for="submitter-name") Your Name
-      input(type="text" name="submitter-name")
-    div
-      label(for="title") Video title
-      input(type="text" name="title")
-    div
-      label(for="youtube-url") YouTube URL
-      input(type="text" name="youtube-url")
-    div
-      input(type="submit")
+  form.form-horizontal.submit-form.row(method="POST" action="/submit-action")
+    .form-group
+      label.control-label.col-sm-3(for="submitter-name") Your Name
+      input.col-sm-9(type="text" name="submitter-name")
+    .form-group
+      label.control-label.col-sm-3(for="title") Video title
+      input.col-sm-9(type="text" name="title")
+    .form-group
+      label.control-label.col-sm-3(for="youtube-url") YouTube URL
+      input.col-sm-9(type="text" name="youtube-url")
+    .form-group
+      input.control-label.btn.btn-primary(type="submit")

@@ -1,14 +1,14 @@
 extends layout
 
 mixin videoVote(n)
-  div
-    +videoDisplay(videos[n])
-    a(href="/eliminate/#{videos[1-n].youtubeVideoID}") Pick
+  div.col-md-6
+    div.panel.panel-primary
+      +videoDisplayContents(videos[n], 438, 242)
+      div.panel-footer
+        a.btn.btn-primary(href="/eliminate/#{videos[1-n].youtubeVideoID}") Pick
 
 block content
-  +backButton
-  
-  h1 Vote!
+  +headerWithBackButton("Vote!")
   
   div
     +videoVote(0)

@@ -22,12 +22,6 @@ var resetContest = function() {
 
 resetContest();
 
-// contest.winner = {
-//   submitterName: "Morgan Thomas",
-//   title: "Three things to do with bees",
-//   youtubeVideoID: "hHUbLv4ThOo"
-// };
-
 var contestViewInfo = {
   ContestStatus: ContestStatus,
   contest: contest

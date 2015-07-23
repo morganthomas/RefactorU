@@ -1,44 +1,49 @@
 extends layout
 
 mixin contestStatusDisplay(message, buttonText, buttonDest)
-  div
-    div #{message}
-    div 
-      a(href="#{buttonDest}") #{buttonText}
+	div.contest-status-display
+		div.alert.alert-info #{message}
+		div 
+			a.btn.btn-primary(href="#{buttonDest}") #{buttonText}
 
-mixin videoList(videos)
-  div
-    for video in videos
-      +videoDisplay(video)
+mixin videoList(header, videos)
+	div.panel.panel-primary
+		div.panel-heading
+			h2 #{header}
+		for video in videos
+			+videoDisplay(video, 560, 315)
+
+block extra-header-data
+	+narrowPage
 
 block content
-  h1 Video Contest
+	h1 Video Contest
 
-  // Contest status display
-  if contest.status === ContestStatus.acceptingSubmissions
-    +contestStatusDisplay("Accepting submissions!", "Submit a Video", "/submit")
-  else if contest.status === ContestStatus.voting
-    +contestStatusDisplay("Voting is open!", "Vote", "/vote")
-  else if contest.status === ContestStatus.done
-    +contestStatusDisplay("The contest is finished!", "Restart", "/restart")
-  
-  if contest.winner
-    div
-      h2 Contest Winner
-      +videoDisplay(contest.winner)
-  
-  if contest.submissionsInRunning.length > 0
-    div
-      if contest.status === ContestStatus.acceptingSubmissions
-        h2 Submissions So Far
-      else
-        h2 Submissions Still in the Running
-      +videoList(contest.submissionsInRunning)
-  
-  if contest.submissionsEliminated.length > 0
-    div
-      if contest.status === ContestStatus.voting
-        h2 Eliminated Submissions
-      else
-        h2 Other Submissions
-      +videoList(contest.submissionsEliminated)
+	// Contest status display
+	if contest.status === ContestStatus.acceptingSubmissions
+		+contestStatusDisplay("Accepting submissions for the video contest!", "Submit a Video", "/submit")
+	else if contest.status === ContestStatus.voting
+		+contestStatusDisplay("Voting is open!", "Vote", "/vote")
+	else if contest.status === ContestStatus.done
+		+contestStatusDisplay("The contest is finished!", "Restart", "/restart")
+	
+	if contest.winner
+		+videoList("Contest Winner", [contest.winner])
+	
+	if contest.submissionsInRunning.length > 0
+		+videoList("Submissions in the Running", contest.submissionsInRunning)
+		//- div
+		//-	 if contest.status === ContestStatus.acceptingSubmissions
+		//-		 h2 Submissions So Far
+		//-	 else
+		//-		 h2 Submissions Still in the Running
+		//-	 +videoList(contest.submissionsInRunning)
+	
+	if contest.submissionsEliminated.length > 0
+		+videoList("Eliminated Submissions", contest.submissionsEliminated)
+		//- div
+		//-	 if contest.status === ContestStatus.voting
+		//-		 h2 Eliminated Submissions
+		//-	 else
+		//-		 h2 Other Submissions
+		//-	 +videoList(contest.submissionsEliminated)
