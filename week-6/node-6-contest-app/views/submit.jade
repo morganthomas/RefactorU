@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 Submit a Video
+  
+  form(method="POST" action="/submit-action")
+    div
+      label(for="submitter-name") Your Name
+      input(type="text" name="submitter-name")
+    div
+      label(for="title") Video title
+      input(type="text" name="title")
+    div
+      label(for="youtube-url") YouTube URL
+      input(type="text" name="youtube-url")
+    div
+      input(type="submit")
