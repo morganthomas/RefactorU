@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1 Translate
+
+  div.form
+    //- input.form-control(placeholder="Source Language" id="translate-from")
+    select#translate-from.language-selector
+    input.form-control(placeholder="Word" id="translate-word")
+    //- input.form-control(placeholder="Target Language" id="translate-to")
+    select#translate-to.language-selector
+    div
+      span.btn.btn-primary#translate-button Translate
+    
+    div#translation
+    
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js")
+    script(src="/language.js")
+    script(src="/translate.js")
+    

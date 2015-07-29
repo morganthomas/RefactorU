@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  span#quiz-language(data-language='#{language}')
+
+  h1 Quiz
+  div.form
+    select#difficulty.difficulty-selector
+      option(value='10') Level 1 (10 words)
+      option(value='100') Level 2 (100 words)
+      option(value='1000') Level 3 (1,000 words)
+      option(value='10000') Level 4 (10,000 words)
+      option(value='20000') Level 5 (20,000 words)
+
+  ol#quiz
+    for quizItem in quizItems
+      li.quiz-item(data-word="#{quizItem.word}")
+        p.quiz-word #{quizItem.word}
+        input.quiz-input(type='text' placeholder='Translation')
+        button.question-submit Check
+  
+  div Score:
+    span#score 0/0
+  
+  button#quiz-submit Submit Quiz
+  
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js")
+  script(src="/language.js")
+  script(src="/quiz.js")
+      
