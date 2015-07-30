@@ -54,10 +54,11 @@ $(document).on('ready', function() {
 
     $.ajax({
       method: 'POST',
-      url: /submit-quiz,
-      data: {data: quiz},
-      success: function(){};
-
+      url: '/submit-quiz',
+      data: {data: JSON.stringify(quiz)},
+      success: function(){
+        alert("Success!");
+      }
     })
   })
 });

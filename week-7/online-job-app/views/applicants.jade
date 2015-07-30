@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	.container
+		h1 Applicants
+		ul#applications.list-unstyled
+			for applicant in applicants
+				hr
+				li.applicant(data-id="#{applicant._id}")
+					h2 #{applicant.name}
+					p #{applicant.bio}
+					p Skills:
+						ul
+							for skill in applicant.skills
+								li #{skill}
+					p Experience: #{applicant.experience} years
+					p #{applicant.why}
+					p
+						a.delete-applicant.btn.btn-danger(href="/delete/#{applicant._id}") Delete Applicant
+	
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js")
+	script(src="/javascripts/applicants.js")

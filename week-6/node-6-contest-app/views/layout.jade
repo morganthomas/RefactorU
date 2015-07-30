@@ -1,20 +1,10 @@
-mixin videoDisplayContents(video, width, height)
-  div.panel-heading
-    h3.video-title #{video.title}
-    h4.video-author Submitted by #{video.submitterName}
-  <iframe width="#{width}" height="#{height}" src="//www.youtube.com/embed/#{video.youtubeVideoID}" frameborder="0" allowfullscreen></iframe>
-
-mixin videoDisplay(video, width, height)
-  div.panel.panel-default
-    +videoDisplayContents(video, width, height)
+mixin youtubePlayer(videoID)
+  <iframe width="560" height="315" src="//www.youtube.com/embed/#{videoID}" frameborder="0" allowfullscreen></iframe>
 
 mixin backButton
   div.back-button
     a(href="/")
       i.fa.fa-arrow-left
-
-mixin narrowPage
-    style .page { max-width: 800px; }
 
 mixin headerWithBackButton(headerText)
   h1
@@ -29,9 +19,7 @@ html(lang='en')
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
     link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css", rel="stylesheet")
     link(href="/style.css", rel="stylesheet")
-    block extra-header-data
 
   body
     .container.page
-      block content
-    
+      block content    

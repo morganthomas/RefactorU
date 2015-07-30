@@ -1,0 +1,25 @@
+extends layout
+
+mixin foodListItem(food)
+	li #{food.name}
+		form(action="/deleteFood/#{food.name}" method="POST")
+			input(type="submit" value="Delete")
+
+block content
+	h1 Hello Boulder!
+	
+	form(action="/addFood" method="POST")
+		input(name="foodName")
+		input(type="submit")
+
+block otherContent
+	h2 Best foods ever
+	
+	ul
+		for food in foods
+			if food.name === 'Pineapple'
+				li=food.name
+			else 
+				+foodListItem(food)
+	
+	p Visitors: #{counter}

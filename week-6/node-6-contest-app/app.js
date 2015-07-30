@@ -12,7 +12,7 @@ app.get('/', controllers.index);
 app.get('/submit', controllers.submit);
 app.post('/submit-action', controllers.submitAction);
 app.get('/vote', controllers.vote);
-app.get('/eliminate/:videoID', controllers.eliminate);
+app.post('/submit-vote', controllers.submitVote);
 app.get('/restart', controllers.restart);
 
 var server = app.listen(3000, function() {

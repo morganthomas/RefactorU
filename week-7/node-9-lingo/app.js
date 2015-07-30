@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.get('/', indexController.index);
 app.get('/translate', indexController.translate);
 app.get('/quiz/:language/:difficulty', indexController.quiz);
+app.post('/submit-quiz', indexController.submitQuiz);
 
 var server = app.listen(3000, function() {
 	console.log('Express server listening on port ' + server.address().port);

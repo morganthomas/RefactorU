@@ -2,8 +2,7 @@ var request = require('request');
 
 var submitVideo = function(author, title, url) {
   request.post('http://localhost:3000/submit-action',
-    { form:
-      {
+    { form: {
         'submitter-name': author,
         'title': title,
         'youtube-url': url

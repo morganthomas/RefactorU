@@ -1,15 +1,26 @@
 extends layout
 
-mixin videoVote(n)
-  div.col-md-6
-    div.panel.panel-primary
-      +videoDisplayContents(videos[n], 438, 242)
-      div.panel-footer
-        a.btn.btn-primary(href="/eliminate/#{videos[1-n].youtubeVideoID}") Pick
+mixin collapsibleVideo(video)
+  div.panel.panel-default(data-video-id="#{video.youtubeVideoID}")
+    div.panel-heading
+      h3.video-title #{video.title}
+      h4.video-author Submitted by #{video.submitterName}
+      a.btn.btn-default(role="button" data-toggle="collapse" data-parent="#videos" href="#video-#{video.youtubeVideoID}") Toggle Video
+    div.panel-body.collapse(id="video-#{video.youtubeVideoID}")
+      +youtubePlayer(video.youtubeVideoID)
 
 block content
   +headerWithBackButton("Vote!")
   
-  div
-    +videoVote(0)
-    +videoVote(1)
+  p Arrange the videos from most to least favorite.
+  
+  div#videos
+    for video in contest.submissions
+      +collapsibleVideo(video)
+  
+  a.btn.btn-primary#submit-vote Submit Vote
+  
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js")
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.2.1/Sortable.min.js")
+  script(src="/vote.js")

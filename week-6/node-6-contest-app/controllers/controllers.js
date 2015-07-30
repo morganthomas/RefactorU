@@ -1,35 +1,29 @@
 var _ = require('lodash');
-var getYouTubeVideoIDFromURL = require('../youtube-url.js');
+var getYouTubeVideoIDFromURL = require('../utility/youtube-url.js');
+var instantRunoffWinner = require('../utility/instant-runoff.js').instantRunoffWinner;
 
-// Videos are objects with properties submitterName, title, youtubeVideoID.
+var contestModel = require('../models/contest.js');
+var ContestStatus = contestModel.ContestStatus;
+var contest = contestModel.contest;
+var resetContest = contestModel.resetContest;
 
 var NUM_SUBMISSIONS_TO_ACCEPT = 8;
 
-var ContestStatus = {
-  acceptingSubmissions: 'accepting submissions',
-  voting: 'voting',
-  done: 'done'
-};
-
-var contest = {};
-
-var resetContest = function() {
-	contest.status = ContestStatus.acceptingSubmissions;
-	contest.winner = null;
-	contest.submissionsInRunning = [];
-	contest.submissionsEliminated = [];
-}
-
-resetContest();
-
-var contestViewInfo = {
-  ContestStatus: ContestStatus,
-  contest: contest
-};
-
 var controllers = {
   index: function(req, res) {
-    res.render('index', contestViewInfo);
+    if (contest.status === ContestStatus.voting && contest.ballots.length > 0) {
+      var winnerID = instantRunoffWinner(
+        contest.submissions.map(function(video) {
+          return video.youtubeVideoID;
+        }),
+        contest.ballots);
+
+      contest.winner = _.find(contest.submissions, function(video) {
+        return video.youtubeVideoID === winnerID;
+      });
+    }
+
+    res.render('index', contestModel);
   },
 
 	submit: function(req, res) {
@@ -40,13 +34,13 @@ var controllers = {
 		var videoID = getYouTubeVideoIDFromURL(req.body['youtube-url']);
 
 		if (contest.status === ContestStatus.acceptingSubmissions && videoID) {
-			contest.submissionsInRunning.push({
+			contest.submissions.unshift({
 				submitterName: req.body['submitter-name'],
 				title: req.body['title'],
 				youtubeVideoID: videoID
 			});
 
-			if (contest.submissionsInRunning.length >= NUM_SUBMISSIONS_TO_ACCEPT) {
+			if (contest.submissions.length >= NUM_SUBMISSIONS_TO_ACCEPT) {
 				contest.status = ContestStatus.voting;
 			}
 		}
@@ -56,33 +50,19 @@ var controllers = {
 
 	vote: function(req, res) {
 		if (contest.status === ContestStatus.voting) {
-			var videos = _.sample(contest.submissionsInRunning, 2);
-			res.render('vote', { videos: videos })
-		}
+			res.render('vote', contestModel)
+		} else {
+      res.send("Not voting right now!");
+    }
 	},
 
-	eliminate: function(req, res) {
-		if (contest.status === ContestStatus.voting) {
-			var submissionIndex = _.findIndex(contest.submissionsInRunning,
-				function(video) {
-					return video.youtubeVideoID === req.params.videoID;
-				});
+  submitVote: function(req, res) {
+    if (contest.status === ContestStatus.voting) {
+      contest.ballots.push(req.body['videoList[]']);
+    }
 
-			if (submissionIndex >= 0) {
-				var submission = contest.submissionsInRunning[submissionIndex];
-				contest.submissionsInRunning.splice(submissionIndex, 1);
-				contest.submissionsEliminated.unshift(submission);
-
-				if (contest.submissionsInRunning.length === 1) {
-					contest.status = ContestStatus.done;
-					contest.winner = contest.submissionsInRunning[0];
-					contest.submissionsInRunning = [];
-				}
-			}
-		}
-
-		res.redirect('/');
-	},
+    res.send('');
+  },
 
 	restart: function(req, res) {
 		resetContest();

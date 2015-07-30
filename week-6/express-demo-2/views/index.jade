@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	h1 Hello Boulder!
+	
+	form(method="POST" action="/contact")
+		input(name="name")
+		input(name="complaint")
+		input(type="submit")

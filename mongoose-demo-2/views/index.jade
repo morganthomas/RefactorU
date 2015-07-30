@@ -1,0 +1,47 @@
+extends layout
+
+block content
+	h1 Welcome to the Kingdom of Everfrost!
+	
+	h2 Create a hero!
+	
+	form#hero-create(action="/create-hero", method="POST")
+		div
+			label(for="name") Name
+			input(name="name")
+		
+		div
+			label(for="costume") Costume
+			input(name="costume")
+		
+		div
+			label(for="catchphrase") Catchphrase
+			input(name="catchphrase")
+		
+		div
+			label(for="powers") Powers
+			input(name="powers")
+		
+		div
+			input(type="submit")
+	
+	h2 Our Heroes...
+
+	if characters.length === 0
+		h6 No heroes...
+	else
+		ul#hero-list
+			for character in characters
+				li
+					.hero-container
+						p
+							strong #{character.name}
+						p Wears: #{character.costume}
+						p "#{character.catchphrase}"
+						
+						p
+							strong Powers:
+						
+						ul.power-list
+							for power in character.powers
+								li.power #{power}
