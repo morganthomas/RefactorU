@@ -1,3 +1,7 @@
+var answersMatch = function(translation, submission) {
+  return isOffByOne(removeDiacritics(translation.toLowerCase()), removeDiacritics(submission.toLowerCase()));
+}
+
 var checkAnswer = function(quizItem) {
   var $quizItem = $(quizItem);
 
@@ -5,9 +9,15 @@ var checkAnswer = function(quizItem) {
     var submission = $quizItem.find('.quiz-input').val();
     var translation = $quizItem.attr('data-translation')
 
-    if(submission === translation){
+    var match = answersMatch(translation, submission);
+
+    if (match !== REJECT) {
       $quizItem.append('<i class="fa fa-check"></i>')
       $quizItem.attr('data-correct', 'true');
+
+      if (match === ACCEPT_WITH_TYPO) {
+        $quizItem.append('<span class="correction">' + translation + '</span>');
+      }
     }
     else{
       $quizItem.append('<i class="fa fa-times"></i>')
@@ -57,7 +67,7 @@ $(document).on('ready', function() {
       url: '/submit-quiz',
       data: {data: JSON.stringify(quiz)},
       success: function(){
-        alert("Success!");
+        window.location = 'http://localhost:3000/progress'
       }
     })
   })

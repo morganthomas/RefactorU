@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "body-parser": "^1",
-    "diacritics": "^1.2.2",
     "express": "^4",
     "jade": "^1",
     "mongoose": "^4.1.0"
